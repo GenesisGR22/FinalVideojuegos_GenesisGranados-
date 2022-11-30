@@ -22,6 +22,9 @@ public interface IMovimientoDao {
     @Query("SELECT * FROM Movimiento WHERE idMovimiento = :id")
     Movimiento getMovimiento(int id);
 
+    @Query("SELECT * FROM Movimiento WHERE idCuenta = :idCuenta")
+    List<Movimiento> getMovimientoCuenta(int idCuenta);
+
     @Insert
     void insert(Movimiento m);
 
