@@ -1,13 +1,27 @@
 package com.example.finalandroid.Entities;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "Movimiento")
 public class Movimiento {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "idMovimiento")
     private int idMovimiento;
+    @ColumnInfo(name = "tipo")
     private String tipo;
+    @ColumnInfo(name = "monto")
     private int monto;
+    @ColumnInfo(name = "motivo")
     private String motivo;
+    @ColumnInfo(name = "imagen")
     private String imagen;
+    @ColumnInfo(name = "latitud")
     private String latitud;
+    @ColumnInfo(name = "longitud")
     private String longitud;
+    @ColumnInfo(name = "idCuenta")
     private int idCuenta;
 
     public int getIdMovimiento() {

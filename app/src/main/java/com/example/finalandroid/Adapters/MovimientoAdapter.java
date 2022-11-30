@@ -40,7 +40,8 @@ public class MovimientoAdapter extends RecyclerView.Adapter<MovimientoAdapter.Mo
         //String imagenM = String.valueOf(data.get(position).getImagen());
         holder.tipo.setText(data.get(position).getTipo());
         holder.motivo.setText(data.get(position).getMotivo());
-        //holder.monto.setText(data.get(position).getMonto());
+        String mont = String.valueOf(data.get(position).getMonto());
+        holder.monto.setText(mont);
         Picasso.get().load(data.get(position).getImagen()).into(holder.imagen);
     }
 

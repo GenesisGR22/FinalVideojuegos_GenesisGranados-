@@ -9,9 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.finalandroid.Adapters.CuentaAdapter;
+import com.example.finalandroid.DataBase.AppDataBase;
 import com.example.finalandroid.Entities.Cuenta;
+import com.example.finalandroid.Entities.Movimiento;
 import com.example.finalandroid.Services.ICuentas;
+import com.example.finalandroid.Services.IMovimiento;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +31,8 @@ public class CuentaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuenta);
+
+        AppDataBase db = AppDataBase.getInstance(this);
 
         TextView nombre = findViewById(R.id.nombre);
         Button registrar = findViewById(R.id.regMov);
@@ -85,6 +93,54 @@ public class CuentaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://637427ec08104a9c5f7b28eb.mockapi.io/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                AppDataBase db = AppDataBase.getInstance(getApplicationContext());
+
+                ICuentas iCuentas = retrofit.create(ICuentas.class);
+                Call<List<Cuenta>> cuentasAll = iCuentas.getAll();
+
+                IMovimiento iMovimiento = retrofit.create(IMovimiento.class);
+                Call<List<Movimiento>> movimientos = iMovimiento.getAll();
+
+                cuentasAll.enqueue(new Callback<List<Cuenta>>() {
+                    @Override
+                    public void onResponse(Call<List<Cuenta>> call, Response<List<Cuenta>> response) {
+                        if (response.code() == 200){
+                            Log.i("CONEXION","OK");
+                            List<Cuenta> listCuenta = response.body();
+                            db.iCuentaDao().insertAll(listCuenta);
+                            Log.i("CONEW","sincronizo?" + listCuenta);
+                        }else{
+                            Log.i("CONEXION","BAD");
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<List<Cuenta>> call, Throwable t) {
+                        Log.i("CONEXION","FALLO EN EL SERVIDOR");
+                    }
+                });
+
+                movimientos.enqueue(new Callback<List<Movimiento>>() {
+                    @Override
+                    public void onResponse(Call<List<Movimiento>> call, Response<List<Movimiento>> response) {
+                        if (response.code() == 200){
+                            Log.i("CONEXION","OK");
+                            List<Movimiento> listMovi = response.body();
+                            db.iMovimientoDao().insertAll(listMovi);
+                            Log.i("CONEW","sincronizo?" + listMovi);
+                        }else{
+                            Log.i("CONEXION","BAD");
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<List<Movimiento>> call, Throwable t) {
+                        Log.i("CONEXION","FALLO EN EL SERVIDOR");
+                    }
+                });
             }
         });
     }

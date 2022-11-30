@@ -1,12 +1,18 @@
 package com.example.finalandroid.Entities;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity(tableName = "Cuenta")
 public class Cuenta {
-    //@PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     private int idCuenta;
+    @ColumnInfo(name = "nombre")
     private String nombre;
-    private List<Movimiento> movimientos;
+    //private List<Movimiento> movimientos;
 
     public int getIdCuenta() {
         return idCuenta;
@@ -24,11 +30,11 @@ public class Cuenta {
         this.nombre = nombre;
     }
 
-    public List<Movimiento> getMovimientos() {
+    /*public List<Movimiento> getMovimientos() {
         return movimientos;
     }
 
     public void setMovimientos(List<Movimiento> movimientos) {
         this.movimientos = movimientos;
-    }
+    }*/
 }
